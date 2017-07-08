@@ -70,36 +70,44 @@ export class WeatherWidget extends Component {
 	render() {
 
 		let {data} = this.state,
-			component,
-			errorTitleStyle = {textAlign: "center"};
+			component;
+
+			// errorTitleStyle = {textAlign: "center"};
 
 		if (data === null) {
-			component = <h1 style={errorTitleStyle}>Something goes wrong</h1>;
+			// component = <h1 style={errorTitleStyle}>Something goes wrong</h1>;
+			component = null;
 		} else {
 
 			component =
 
-				<div className="weather-widget__wrapper_inner">
-					<ChangeCityButtons
-						index={this.state.index}
-						changeCity={this.changeCity}
-						data={this.state.data}
-					/>
+				<div className="weather-widget__wrapper">
+					<div className="weather-widget__wrapper_inner">
+						<ChangeCityButtons
+							index={this.state.index}
+							changeCity={this.changeCity}
+							data={this.state.data}
+						/>
 
-					<WeatherInformation
-						index={this.state.index}
-						data={this.state.data[this.state.index]}
-					/>
+						<WeatherInformation
+							index={this.state.index}
+							data={this.state.data[this.state.index]}
+						/>
+					</div>
 				</div>;
 		}
+
+		const style = {textAlign: "center"};
 
 		return (
 			<div>
 				<h1 className="main-title">Weather Widget Component</h1>
-				<h2 className="subtitle">Feel free to choose the city to get current forecast for it !</h2>
-				<div className="weather-widget__wrapper">
+
+				<div>
 					{component}
 				</div>
+
+				<h2 className="subtitle" style={style}>Feel free to choose the city to get current forecast for it !</h2>
 			</div>
 		);
 	}

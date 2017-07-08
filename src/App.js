@@ -9,7 +9,6 @@ import Home from "./components/home-page/index";
 import Input from "./components/input-digits-filter/index";
 import Tabs from "./components/tabs/index";
 import WeatherWidget from "./components/weather-widget/index";
-import MainNav from "./components/main-nav/index";
 
 export default class App extends Component {
 	render() {
@@ -17,7 +16,13 @@ export default class App extends Component {
 			<div className="container">
 				<div className="app">
 
-					<MainNav />
+					<nav className="main-nav">
+						<Link className="main-nav-item" exact to="/">Home</Link>
+						<Link className="main-nav-item" to="/weather-widget">Weather Widget</Link>
+						<Link className="main-nav-item" to="/tabs">Tabs</Link>
+						<Link className="main-nav-item" to="/input">Input</Link>
+						<Link className="main-nav-item" to="/about">About</Link>
+					</nav>
 
 					<div>
 						<Route exact path="/" component={Home}/>
