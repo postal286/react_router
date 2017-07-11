@@ -1,4 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import _ from 'lodash';
+
 
 export default class WeatherInformation extends Component {
 
@@ -12,11 +14,35 @@ export default class WeatherInformation extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		if (JSON.stringify(nextProps.data) !== JSON.stringify(this.props.data) || this.props.index !== nextProps.index) {
+		if (!(_.isEqual(nextProps.data, this.props.data)) || this.props.index !== nextProps.index) {
 			this.setState({
 				data: nextProps.data
 			});
 		}
+	}
+
+	_renderWeatherData(itemsData) {
+
+		const templateRow = (itemsData) => {
+			return (
+
+				<div className="weather-widget__content_info-item-wrapper">
+					<h3 className="weather-widget__content_second-title">
+						{itemsData.title}
+					</h3>
+					<div className="weather-widget__content_info">
+						{itemsData.param}
+					</div>
+				</div>
+
+			)
+		};
+
+		return(
+			<div className="weather-widget__content_info-wrapper">
+				{_.map(itemsData ,templateRow)}
+			</div>
+		);
 	}
 
 	render() {
@@ -27,6 +53,24 @@ export default class WeatherInformation extends Component {
 				weather = data.weather[0].main,
 				wind = Math.round(data.wind.speed),
 				clouds = data.clouds.all;
+
+		let itemsData = [
+			{
+				title: "Weather",
+				param: weather
+			},
+			{
+				title: "Temperature",
+				param: `${temp}°C`
+			},{
+				title: "Wind Speed",
+				param: wind
+			},
+			{
+				title: "Clouds",
+				param: `${clouds} %`
+			}
+		];
 
 		return (
 			<div className="weather-widget__content">
@@ -44,43 +88,10 @@ export default class WeatherInformation extends Component {
 					/>
 				</div>
 
-				<div className="weather-widget__content_info-wrapper">
-
-					<div className="weather-widget__content_info-item-wrapper">
-						<h3 className="weather-widget__content_second-title">
-							Weather
-						</h3>
-						<div className="weather-widget__content_info">
-							{weather}
-						</div>
-					</div>
-					<div className="weather-widget__content_info-item-wrapper">
-						<h3 className="weather-widget__content_second-title">
-							Temperature
-						</h3>
-						<div className="weather-widget__content_info">
-							{`${temp}°C`}
-						</div>
-					</div>
-					<div className="weather-widget__content_info-item-wrapper">
-						<h3 className="weather-widget__content_second-title">
-							Wind Speed
-						</h3>
-						<div className="weather-widget__content_info">
-							{wind} m/s
-						</div>
-					</div>
-					<div className="weather-widget__content_info-item-wrapper">
-						<h3 className="weather-widget__content_second-title">
-							Clouds
-						</h3>
-						<div className="weather-widget__content_info">
-							{clouds} %
-						</div>
-					</div>
-				</div>
+				{this._renderWeatherData(itemsData)}
 
 			</div>
 		);
 	}
 }
+

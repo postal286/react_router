@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import axios from "axios";
+import _ from 'lodash';
 
-
-import WeatherInformation from "./weather-information";
 import ChangeCityButtons from "./change-city-buttons";
+import Spinner from "./spinner";
+import WeatherInformation from "./weather-information";
+
 import "./weather-widget.pcss";
 
 const cities = {
@@ -14,6 +16,21 @@ const cities = {
 
 const API_KEY = "553baeedbafd8c0df291c4dad4e03fc1";
 const query = `http://api.openweathermap.org/data/2.5/group?id=${cities.omsk},${cities.moscow},${cities.newYork}&units=metric`;
+
+class Loader extends React.Component {
+	render () {
+		return (
+			<div>
+				{
+					!this.props.isReady && <Spinner />
+				}
+				{
+					this.props.isReady && this.props.children
+				}
+			</div>
+		);
+	}
+}
 
 export class WeatherWidget extends Component {
 
@@ -26,19 +43,24 @@ export class WeatherWidget extends Component {
 		};
 
 		this.changeCity = this.changeCity.bind(this);
+		this.launchGetData = this.launchGetData.bind(this);
 	}
 
 	componentDidMount() {
-		this.getData(query);
-		this.timer = setInterval( () => this.getData(query), 600000);
+		this.launchGetData();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return this.props !== nextProps || JSON.stringify(this.state.data) !== JSON.stringify(nextState.data) || this.state.index !== nextState.index;
+		return (!(_.isEqual(this.state.data, nextState.data)) || this.state.index !== nextState.index);
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.timer);
+		clearTimeout(this.timer);
+	}
+
+	launchGetData(){
+		this.getData(query);
+		this.timer = setTimeout(this.launchGetData, 600000);
 	}
 
 	getData(CityQuery) {
@@ -57,7 +79,7 @@ export class WeatherWidget extends Component {
 				});
 			})
 			.catch(function (error) {
-				console.log(error);
+				console.error(error);
 			});
 	}
 
@@ -69,43 +91,30 @@ export class WeatherWidget extends Component {
 
 	render() {
 
-		let {data} = this.state,
-			component;
-
-			// errorTitleStyle = {textAlign: "center"};
-
-		if (data === null) {
-			// component = <h1 style={errorTitleStyle}>Something goes wrong</h1>;
-			component = null;
-		} else {
-
-			component =
-
-				<div className="weather-widget__wrapper">
-					<div className="weather-widget__wrapper_inner">
-						<ChangeCityButtons
-							index={this.state.index}
-							changeCity={this.changeCity}
-							data={this.state.data}
-						/>
-
-						<WeatherInformation
-							index={this.state.index}
-							data={this.state.data[this.state.index]}
-						/>
-					</div>
-				</div>;
-		}
-
+		const {data} = this.state;
+		const {index} = this.state;
 		const style = {textAlign: "center"};
 
 		return (
 			<div>
 				<h1 className="main-title">Weather Widget Component</h1>
 
-				<div>
-					{component}
-				</div>
+				<Loader isReady={data}>
+					<div className="weather-widget__wrapper">
+						<div className="weather-widget__wrapper_inner">
+							<ChangeCityButtons
+								index={index}
+								changeCity={this.changeCity}
+								data={data}
+							/>
+
+							<WeatherInformation
+								index={index}
+								data={data && data[index]}
+							/>
+						</div>
+					</div>
+				</Loader>
 
 				<h2 className="subtitle" style={style}>Feel free to choose the city to get current forecast for it !</h2>
 			</div>
