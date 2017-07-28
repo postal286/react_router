@@ -1,16 +1,13 @@
-import React, {Component} from "react";
+import React, {Component} from "react"
+import { Route, NavLink, Switch, Link} from "react-router-dom"
 
-import { Route, NavLink, Switch, Link} from "react-router-dom";
+import "./app.pcss"
 
-import "./app.pcss";
-
-import About from "about";
-import Home from "home-page";
-import Input from "input-digits-filter";
-import Tabs from "tabs";
-import WeatherWidget from "weather-widget";
-
-
+import About from "about"
+import Home from "home-page"
+import Input from "input-digits-filter"
+import Tabs from "tabs"
+import WeatherWidget from "weather-widget"
 
 const NoMatch = () => (
 	<div>

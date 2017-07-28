@@ -1,30 +1,21 @@
-import React, { Component } from "react";
-import _ from "lodash";
+import React, { Component } from "react"
+import _ from "lodash"
+import { connect } from "react-redux"
+import { changeTab } from "../../actions/changeTab.js"
 
-export default class TabsInner extends Component {
+class TabsInner extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			selected: 0
-		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return this.props !== nextProps || this.state.selected !== nextState.selected;
-	}
-
-	handleClick(index, event) {
-		event.preventDefault();
-		this.setState({
-			selected: index
-		});
+	handleClick(index) {
+		this.props.dispatch(changeTab(index));
 	}
 
 	_renderTitles() {
 		const labels = (child, index) => {
-			let activeClass = (this.state.selected === index ? "tabs__tab__li_a_active" : "");
+			let activeClass = (this.props.selected === index ? "tabs__tab__li_a_active" : "");
 
 			return (
 				<li key={index} className="tabs__tab__li">
@@ -47,7 +38,7 @@ export default class TabsInner extends Component {
 	_renderContent() {
 		return (
 			<div className="tab_content">
-				{this.props.children[this.state.selected]}
+				{this.props.children[this.props.selected]}
 			</div>
 		);
 	}
@@ -61,3 +52,11 @@ export default class TabsInner extends Component {
 		);
 	}
 }
+
+function mapStateToProps (state) {
+  return {
+    selected: state.tabs.selected
+  }
+}
+
+export default connect(mapStateToProps)(TabsInner)
