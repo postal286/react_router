@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import "./home-page.pcss";
 
 export class HomePage extends Component {
-	render(){
+	render() {
 		return(
 			<div>
 				<div className="home-page__top-section">
