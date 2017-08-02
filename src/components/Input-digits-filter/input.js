@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React, { Component } from "react"
+import ReactDOM from "react-dom"
 
-import "./input.pcss";
+import "./input.pcss"
 
 export class Input extends Component {
 	constructor(props) {
@@ -66,12 +66,12 @@ export class Input extends Component {
 				</p>
 
 				<div className="input-filter-wrapper">
-					<input placeholder='Type something...'
+					<input placeholder="Type something..."
 								 onBlur={this.filterInputValue}
 								 value={this.state.value}
 								 onChange={this.onInputChange}
-								 className='input-filter'
-								 ref='firstInput'
+								 className="input-filter"
+								 ref="firstInput"
 					/>
 					<button
 						onClick={this.clearInputValue}

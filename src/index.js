@@ -7,8 +7,6 @@ import { BrowserRouter } from "react-router-dom"
 
 const root = document.getElementById("root");
 
-store.subscribe(() => console.log(store.getState()));
-
 render(
 	<Provider store={store}>
 		<BrowserRouter>

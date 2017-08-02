@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 
-import "./home-page.pcss";
+import "./home-page.pcss"
 
 export class HomePage extends Component {
 	render() {

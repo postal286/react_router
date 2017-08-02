@@ -11,7 +11,6 @@ class ChangeCityButtons extends Component {
 	}
 
 	changeCityTab(index) {
-		// console.log(this.props)
 		this.props.changeCityTab(index);
 	}
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import _ from "lodash"
+import map from "lodash/map"
 import { connect } from "react-redux"
 import { changeTab } from "../../actions/changeTab"
 
@@ -30,7 +30,7 @@ class TabsInner extends Component {
 
 		return (
 			<ul className="tabs__tab">
-				{_.map(this.props.children, labels)}
+				{map(this.props.children, labels)}
 			</ul>
 		);
 	}

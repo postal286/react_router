@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import _ from 'lodash';
+import React, {Component} from "react"
+import map from "lodash/map"
 
-import './tabs.pcss';
+import "./tabs.pcss"
 
-import TabsInner from './tabs-inner';
+import TabsInner from "./tabs-inner"
 
 const dataTabs = [
 	{
@@ -29,13 +29,13 @@ export class Tabs extends Component {
 
 		const data = [];
 
-		_.map(dataTabs, (item) => {
+		map(dataTabs, (item) => {
 			data.push(
 				<div label={item.title} key={item.tabId}>
-					<h3 className='tab_content__city_title'>
+					<h3 className="tab_content__city_title">
 						{item.title}
 					</h3>
-					<p className='tab_content__city_description'>
+					<p className="tab_content__city_description">
 						{item.text}
 					</p>
 				</div>);

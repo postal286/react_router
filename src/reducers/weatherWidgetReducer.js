@@ -17,6 +17,9 @@ export default function reducer(state = {
 		case "RECEIVE_DATA":
 			return { ...state, isLoading: false, isLoaded: true, data: action.payload};
 
+		case "CHANGE_CITY_TAB":
+			return {...state, cityTab: action.cityTab};
+
 		default:
 			return state;
 	}

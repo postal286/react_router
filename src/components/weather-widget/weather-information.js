@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import map from "lodash/map"
-import {connect} from "react-redux"
-
+import { connect } from "react-redux"
 
 class WeatherInformation extends Component {
 

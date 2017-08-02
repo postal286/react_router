@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import isEqual from "lodash/isEqual"
 
 import { changeCytyTab } from "../../actions/changeCityTab"
 import { getWeatherData } from "../../actions/getWeatherData"
@@ -32,6 +33,10 @@ class WeatherWidget extends Component {
 		super(props);
 	}
 
+	shouldComponentUpdate(nextProps){
+		return !(isEqual(this.props.weatherWidget, nextProps.weatherWidget));
+	}
+
 	changeCityTab(index){
 		this.props.changeCityTab(index)
 	}
@@ -44,6 +49,7 @@ class WeatherWidget extends Component {
 
 		let {data} = this.props.weatherWidget.data || {};
 		let style = {textAlign: "center"};
+		console.log('render');
 
 		return (
 			<div>

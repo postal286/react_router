@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import "./spinner.pcss";
+import "./spinner.pcss"
 
 export default class Spinner extends Component {
 	render() {
