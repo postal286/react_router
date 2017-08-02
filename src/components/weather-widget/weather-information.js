@@ -1,25 +1,14 @@
-import React, { Component } from "react";
-import _ from 'lodash';
+import React, { Component } from "react"
+import map from "lodash/map"
+import {connect} from "react-redux"
 
 
-export default class WeatherInformation extends Component {
+class WeatherInformation extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			index: props.index,
-			data: props.data
-		};
 	}
 
-	componentWillReceiveProps(nextProps){
-		if (!(_.isEqual(nextProps.data, this.props.data)) || this.props.index !== nextProps.index) {
-			this.setState({
-				data: nextProps.data
-			});
-		}
-	}
 
 	_renderWeatherData(itemsData) {
 
@@ -40,37 +29,43 @@ export default class WeatherInformation extends Component {
 
 		return(
 			<div className="weather-widget__content_info-wrapper">
-				{_.map(itemsData ,templateRow)}
+				{map(itemsData, templateRow)}
 			</div>
 		);
 	}
 
 	render() {
-		let {data} = this.state,
-				name = data.name,
-				icon = data.weather[0].icon,
-				temp = Math.round(data.main.temp),
-				weather = data.weather[0].main,
-				wind = Math.round(data.wind.speed),
-				clouds = data.clouds.all;
 
-		let itemsData = [
-			{
-				title: "Weather",
-				param: weather
-			},
-			{
-				title: "Temperature",
-				param: `${temp}°C`
-			},{
-				title: "Wind Speed",
-				param: wind
-			},
-			{
-				title: "Clouds",
-				param: `${clouds} %`
-			}
-		];
+		let data, name, icon, temp, weather, wind, clouds, itemsData;
+
+		if (this.props.weatherWidget) {
+			data = this.props.weatherWidget.data.data[`${this.props.weatherWidget.cityTab}`];
+			name = data.name;
+			icon = data.weather["0"].icon;
+			temp = Math.round(data.main.temp);
+			weather = data.weather["0"].main;
+			wind = Math.round(data.wind.speed);
+			clouds = data.clouds.all;
+
+			itemsData = [
+				{
+					title: "Weather",
+					param: weather
+				},
+				{
+					title: "Temperature",
+					param: `${temp}°C`
+				},{
+					title: "Wind Speed",
+					param: wind
+				},
+				{
+					title: "Clouds",
+					param: `${clouds} %`
+				}
+			];
+		}
+
 
 		return (
 			<div className="weather-widget__content">
@@ -95,3 +90,10 @@ export default class WeatherInformation extends Component {
 	}
 }
 
+function mapStateToProps (state) {
+	return {
+		weatherWidget: state.weatherWidget
+	}
+}
+
+export default connect(mapStateToProps)(WeatherInformation)

@@ -1,21 +1,15 @@
-import React, {Component} from "react";
-import axios from "axios";
-import _ from 'lodash';
+import React, { Component } from "react"
+import { connect } from "react-redux"
 
-import ChangeCityButtons from "./change-city-buttons";
-import Spinner from "./spinner";
-import WeatherInformation from "./weather-information";
+import { changeCytyTab } from "../../actions/changeCityTab"
+import { getWeatherData } from "../../actions/getWeatherData"
 
-import "./weather-widget.pcss";
+import ChangeCityButtons from "./change-city-buttons"
+import Spinner from "./spinner"
+import WeatherInformation from "./weather-information"
 
-const cities = {
-	omsk: 1496153,
-	moscow: 5202009,
-	newYork: 5128638
-};
+import "./weather-widget.pcss"
 
-const API_KEY = "553baeedbafd8c0df291c4dad4e03fc1";
-const query = `http://api.openweathermap.org/data/2.5/group?id=${cities.omsk},${cities.moscow},${cities.newYork}&units=metric`;
 
 class Loader extends React.Component {
 	render () {
@@ -32,68 +26,24 @@ class Loader extends React.Component {
 	}
 }
 
-export class WeatherWidget extends Component {
+class WeatherWidget extends Component {
 
 	constructor(props) {
 		super(props);
+	}
 
-		this.state = {
-			index: 0,
-			data: null
-		};
-
-		this.changeCity = this.changeCity.bind(this);
-		this.launchGetData = this.launchGetData.bind(this);
+	changeCityTab(index){
+		this.props.changeCityTab(index)
 	}
 
 	componentDidMount() {
-		this.launchGetData();
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return (!(_.isEqual(this.state.data, nextState.data)) || this.state.index !== nextState.index);
-	}
-
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
-
-	launchGetData(){
-		this.getData(query);
-		this.timer = setTimeout(this.launchGetData, 600000);
-	}
-
-	getData(CityQuery) {
-
-		axios.get(CityQuery,
-			{
-				params: {
-					appid: API_KEY,
-					lang: "ru",
-					units: "metric"
-				}
-			})
-			.then(({ data })=> {
-				this.setState({
-					data: data.list
-				});
-			})
-			.catch(function (error) {
-				console.error(error);
-			});
-	}
-
-	changeCity(index) {
-		this.setState({
-			index: index
-		});
+		this.props.getData();
 	}
 
 	render() {
 
-		const {data} = this.state;
-		const {index} = this.state;
-		const style = {textAlign: "center"};
+		let {data} = this.props.weatherWidget.data || {};
+		let style = {textAlign: "center"};
 
 		return (
 			<div>
@@ -102,16 +52,8 @@ export class WeatherWidget extends Component {
 				<Loader isReady={data}>
 					<div className="weather-widget__wrapper">
 						<div className="weather-widget__wrapper_inner">
-							<ChangeCityButtons
-								index={index}
-								changeCity={this.changeCity}
-								data={data}
-							/>
-
-							<WeatherInformation
-								index={index}
-								data={data && data[index]}
-							/>
+							<ChangeCityButtons/>
+							<WeatherInformation/>
 						</div>
 					</div>
 				</Loader>
@@ -121,3 +63,22 @@ export class WeatherWidget extends Component {
 		);
 	}
 }
+
+function mapStateToProps (state) {
+	return {
+		weatherWidget: state.weatherWidget
+	}
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		getData() {
+			dispatch(getWeatherData())
+		},
+		changeCytyTab(index) {
+			dispatch(changeCytyTab(index))
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeatherWidget)

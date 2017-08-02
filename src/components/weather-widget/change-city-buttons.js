@@ -1,50 +1,33 @@
-import React, { Component } from "react";
-import _ from "lodash";
+import React, { Component } from "react"
+import map from "lodash/map"
+import {connect} from "react-redux"
 
-import CityButton from "./city-button";
+import changeCityTab from "../../actions/changeCityTab"
 
-export default class ChangeCityButtons extends Component {
+class ChangeCityButtons extends Component {
 
 	constructor(props){
 		super(props);
-
-		this.state = {
-			index: props.index,
-			data: props.data
-		};
-
-		this.changeCityForecast = this.changeCityForecast.bind(this);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return this.props !== nextProps || this.state.index !== nextState.index;
-	}
-
-	componentWillReceiveProps(nextProps){
-
-		if (this.props.index !== nextProps.index) {
-			this.setState({
-				index: nextProps.index
-			});
-		}
-	}
-
-	changeCityForecast(index){
-		this.props.changeCity(index);
+	changeCityTab(index) {
+		// console.log(this.props)
+		this.props.changeCityTab(index);
 	}
 
 	render(){
 
-		const data = this.state.data;
+		const {weatherWidget} = this.props;
+		const cities = weatherWidget.data.data;
+		const buttonClassName = "weather-widget__button";
+		const currentTab = weatherWidget.cityTab;
 
-		const buttons = _.map(data, (data, index) =>
-			<CityButton
+		const buttons = map(cities, (weatherWidget, index) =>
+			<a
 				key={index}
-				index={index}
-				data={data}
-				isActive={this.state.index === index ? " weather-widget__current-city" : ""}
-				changeCityForecast={this.changeCityForecast}
-			/>
+				className={(currentTab === index) ? `${buttonClassName} weather-widget__current-city` : `${buttonClassName}`}
+				onClick={this.changeCityTab.bind(this, index)}
+			>{cities[index].name}</a>
 		);
 
 		return (
@@ -54,3 +37,21 @@ export default class ChangeCityButtons extends Component {
 		);
 	}
 }
+
+
+function mapStateToProps	(state){
+	return {
+		weatherWidget: state.weatherWidget
+	}
+}
+
+function mapDispatchToProps	(dispatch){
+	return {
+		changeCityTab(index) {
+			dispatch(changeCityTab(index))
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeCityButtons)
+

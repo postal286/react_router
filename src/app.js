@@ -7,7 +7,7 @@ import About from "about"
 import Home from "home-page"
 import Input from "input-digits-filter"
 import Tabs from "tabs"
-import WeatherWidget from "weather-widget"
+import WeatherWidget from "./components/weather-widget/weather-widget"
 
 const NoMatch = () => (
 	<div>

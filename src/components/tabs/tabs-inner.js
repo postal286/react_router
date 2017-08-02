@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import _ from "lodash"
 import { connect } from "react-redux"
-import { changeTab } from "../../actions/changeTab.js"
+import { changeTab } from "../../actions/changeTab"
 
 class TabsInner extends Component {
 
