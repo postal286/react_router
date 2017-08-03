@@ -49,7 +49,6 @@ class WeatherWidget extends Component {
 
 		let {data} = this.props.weatherWidget.data || {};
 		let style = {textAlign: "center"};
-		console.log('render');
 
 		return (
 			<div>
