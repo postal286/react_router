@@ -11,7 +11,7 @@ const common = {
     entry: "./index",
 
     output: {
-        filename: "js/app.js",
+        filename: "app.js",
         path: path.resolve(__dirname, "public")
     },
 
@@ -30,7 +30,7 @@ const common = {
                 NODE_ENV: JSON.stringify("production")
             }
         }),
-        new etp("css/style.css")
+        new etp("style.css")
     ],
 
     module: {
