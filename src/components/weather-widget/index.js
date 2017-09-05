@@ -1,1 +1,3 @@
-export { WeatherWidget as default } from "./weather-widget"
+import { default as WeatherWidget } from "./weather-widget"
+
+export { WeatherWidget as default }

@@ -1,5 +1,4 @@
 import axios from "axios"
-import store from "./../store"
 import startLoadingData from "../actions/startLoadingData"
 import receiveData from "../actions/receiveData"
 import loadingError from "../actions/loadingError"
@@ -15,9 +14,10 @@ const query = `http://api.openweathermap.org/data/2.5/group?id=${cities.omsk},${
 
 export function getWeatherData() {
 
-	store.dispatch(startLoadingData());
-
 	return function (dispatch)	{
+
+		dispatch(startLoadingData());
+
 		axios.get(query,
 			{
 				params: {
